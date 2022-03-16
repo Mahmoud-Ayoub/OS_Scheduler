@@ -2,7 +2,7 @@
 Simple non-preemptive OS scheduler for embedded applications.
 
 ## Description : 
-This is the implementation of a non-preemptive priority-based OS scheduler that manages multitasking on specific hardware architecture. This scheduler executes periodic tasks based on its assigned priority and periodicity.
+This is the implementation of a non-preemptive priority-based OS scheduler that manages multitasking on a specific hardware architecture. This scheduler executes periodic tasks based on its assigned priority and periodicity.
 
 ## Supported BSP :
 ATmega32 MCU
