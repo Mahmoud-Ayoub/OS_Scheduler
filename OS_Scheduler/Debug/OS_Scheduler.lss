@@ -1,0 +1,670 @@
+
+OS_Scheduler.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000003b0  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000424  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          0000001a  00800060  00800060  00000424  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000424  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000454  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000150  00000000  00000000  00000490  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000ed1  00000000  00000000  000005e0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 0000087d  00000000  00000000  000014b1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000007ff  00000000  00000000  00001d2e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000280  00000000  00000000  00002530  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000535  00000000  00000000  000027b0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    000006e5  00000000  00000000  00002ce5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000100  00000000  00000000  000033ca  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 54 01 	jmp	0x2a8	; 0x2a8 <__vector_9>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	aa 37       	cpi	r26, 0x7A	; 122
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 61 00 	call	0xc2	; 0xc2 <main>
+  74:	0c 94 d6 01 	jmp	0x3ac	; 0x3ac <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <LED_init>:
+}
+void LED_ON (uint8 PortNumber , uint8 PinNumber) {
+	DIO_SetPinValue (PortNumber , PinNumber , HIGH) ;
+}
+void LED_OFF (uint8 PortNumber , uint8 PinNumber) {
+	DIO_SetPinValue (PortNumber , PinNumber , LOW) ;
+  7c:	41 e0       	ldi	r20, 0x01	; 1
+  7e:	0e 94 8a 00 	call	0x114	; 0x114 <DIO_SetPinDirection>
+  82:	08 95       	ret
+
+00000084 <LED_TOGGLE>:
+}
+void LED_TOGGLE (uint8 PortNumber , uint8 PinNumber) {
+	DIO_TogglePinValue(PortNumber , PinNumber) ; 
+  84:	0e 94 ff 00 	call	0x1fe	; 0x1fe <DIO_TogglePinValue>
+  88:	08 95       	ret
+
+0000008a <Init_Task>:
+    {
+	   
+    }
+}
+void Init_Task (void) {
+	LED_init(portA , 2) ;
+  8a:	62 e0       	ldi	r22, 0x02	; 2
+  8c:	80 e0       	ldi	r24, 0x00	; 0
+  8e:	0e 94 3e 00 	call	0x7c	; 0x7c <LED_init>
+	LED_init(portA , 1) ;
+  92:	61 e0       	ldi	r22, 0x01	; 1
+  94:	80 e0       	ldi	r24, 0x00	; 0
+  96:	0e 94 3e 00 	call	0x7c	; 0x7c <LED_init>
+	LED_init(portA , 0) ;
+  9a:	60 e0       	ldi	r22, 0x00	; 0
+  9c:	80 e0       	ldi	r24, 0x00	; 0
+  9e:	0e 94 3e 00 	call	0x7c	; 0x7c <LED_init>
+  a2:	08 95       	ret
+
+000000a4 <Task1_Green_LED>:
+}
+
+void Task1_Green_LED (void) {
+	LED_TOGGLE(portA , 2) ; 
+  a4:	62 e0       	ldi	r22, 0x02	; 2
+  a6:	80 e0       	ldi	r24, 0x00	; 0
+  a8:	0e 94 42 00 	call	0x84	; 0x84 <LED_TOGGLE>
+  ac:	08 95       	ret
+
+000000ae <Task2_Yellow_LED>:
+}
+
+void Task2_Yellow_LED (void) {
+	LED_TOGGLE(portA , 1) ;
+  ae:	61 e0       	ldi	r22, 0x01	; 1
+  b0:	80 e0       	ldi	r24, 0x00	; 0
+  b2:	0e 94 42 00 	call	0x84	; 0x84 <LED_TOGGLE>
+  b6:	08 95       	ret
+
+000000b8 <Task3_Red_LED>:
+}
+
+void Task3_Red_LED (void) {
+	LED_TOGGLE(portA , 0) ;
+  b8:	60 e0       	ldi	r22, 0x00	; 0
+  ba:	80 e0       	ldi	r24, 0x00	; 0
+  bc:	0e 94 42 00 	call	0x84	; 0x84 <LED_TOGGLE>
+  c0:	08 95       	ret
+
+000000c2 <main>:
+void Task3_Red_LED (void) ;
+
+int main(void)
+{
+	/* Initialization */ 
+	OS_Init() ; 
+  c2:	0e 94 b8 01 	call	0x370	; 0x370 <OS_Init>
+    
+	/* Create Tasks */
+	OS_CreateTask(0 , 0 , 0 , Init_Task) ; 
+  c6:	25 e4       	ldi	r18, 0x45	; 69
+  c8:	30 e0       	ldi	r19, 0x00	; 0
+  ca:	40 e0       	ldi	r20, 0x00	; 0
+  cc:	50 e0       	ldi	r21, 0x00	; 0
+  ce:	60 e0       	ldi	r22, 0x00	; 0
+  d0:	70 e0       	ldi	r23, 0x00	; 0
+  d2:	80 e0       	ldi	r24, 0x00	; 0
+  d4:	0e 94 bd 01 	call	0x37a	; 0x37a <OS_CreateTask>
+    OS_CreateTask(1 , 1000 , 0 , Task1_Green_LED) ; 
+  d8:	22 e5       	ldi	r18, 0x52	; 82
+  da:	30 e0       	ldi	r19, 0x00	; 0
+  dc:	40 e0       	ldi	r20, 0x00	; 0
+  de:	50 e0       	ldi	r21, 0x00	; 0
+  e0:	68 ee       	ldi	r22, 0xE8	; 232
+  e2:	73 e0       	ldi	r23, 0x03	; 3
+  e4:	81 e0       	ldi	r24, 0x01	; 1
+  e6:	0e 94 bd 01 	call	0x37a	; 0x37a <OS_CreateTask>
+	OS_CreateTask(2 , 2000 , 0 , Task2_Yellow_LED) ; 
+  ea:	27 e5       	ldi	r18, 0x57	; 87
+  ec:	30 e0       	ldi	r19, 0x00	; 0
+  ee:	40 e0       	ldi	r20, 0x00	; 0
+  f0:	50 e0       	ldi	r21, 0x00	; 0
+  f2:	60 ed       	ldi	r22, 0xD0	; 208
+  f4:	77 e0       	ldi	r23, 0x07	; 7
+  f6:	82 e0       	ldi	r24, 0x02	; 2
+  f8:	0e 94 bd 01 	call	0x37a	; 0x37a <OS_CreateTask>
+	OS_CreateTask(3 , 3000 , 0 , Task3_Red_LED) ; 
+  fc:	2c e5       	ldi	r18, 0x5C	; 92
+  fe:	30 e0       	ldi	r19, 0x00	; 0
+ 100:	40 e0       	ldi	r20, 0x00	; 0
+ 102:	50 e0       	ldi	r21, 0x00	; 0
+ 104:	68 eb       	ldi	r22, 0xB8	; 184
+ 106:	7b e0       	ldi	r23, 0x0B	; 11
+ 108:	83 e0       	ldi	r24, 0x03	; 3
+ 10a:	0e 94 bd 01 	call	0x37a	; 0x37a <OS_CreateTask>
+	
+	/* Start the Scheduler */
+	OS_Start() ; 
+ 10e:	0e 94 d3 01 	call	0x3a6	; 0x3a6 <OS_Start>
+ 112:	ff cf       	rjmp	.-2      	; 0x112 <main+0x50>
+
+00000114 <DIO_SetPinDirection>:
+		case portD :
+			if (Value == 1) {
+				SET_BIT(PORTD_REG,PinNumber) ;
+			}
+			else if (Value == 0) {
+				CLEAR_BIT(PORTD_REG,PinNumber) ;
+ 114:	81 30       	cpi	r24, 0x01	; 1
+ 116:	11 f1       	breq	.+68     	; 0x15c <DIO_SetPinDirection+0x48>
+ 118:	30 f0       	brcs	.+12     	; 0x126 <DIO_SetPinDirection+0x12>
+ 11a:	82 30       	cpi	r24, 0x02	; 2
+ 11c:	d1 f1       	breq	.+116    	; 0x192 <DIO_SetPinDirection+0x7e>
+ 11e:	83 30       	cpi	r24, 0x03	; 3
+ 120:	09 f4       	brne	.+2      	; 0x124 <DIO_SetPinDirection+0x10>
+ 122:	52 c0       	rjmp	.+164    	; 0x1c8 <DIO_SetPinDirection+0xb4>
+ 124:	08 95       	ret
+ 126:	41 30       	cpi	r20, 0x01	; 1
+ 128:	59 f4       	brne	.+22     	; 0x140 <DIO_SetPinDirection+0x2c>
+ 12a:	2a b3       	in	r18, 0x1a	; 26
+ 12c:	81 e0       	ldi	r24, 0x01	; 1
+ 12e:	90 e0       	ldi	r25, 0x00	; 0
+ 130:	02 c0       	rjmp	.+4      	; 0x136 <DIO_SetPinDirection+0x22>
+ 132:	88 0f       	add	r24, r24
+ 134:	99 1f       	adc	r25, r25
+ 136:	6a 95       	dec	r22
+ 138:	e2 f7       	brpl	.-8      	; 0x132 <DIO_SetPinDirection+0x1e>
+ 13a:	82 2b       	or	r24, r18
+ 13c:	8a bb       	out	0x1a, r24	; 26
+ 13e:	08 95       	ret
+ 140:	41 11       	cpse	r20, r1
+ 142:	5c c0       	rjmp	.+184    	; 0x1fc <DIO_SetPinDirection+0xe8>
+ 144:	2a b3       	in	r18, 0x1a	; 26
+ 146:	81 e0       	ldi	r24, 0x01	; 1
+ 148:	90 e0       	ldi	r25, 0x00	; 0
+ 14a:	02 c0       	rjmp	.+4      	; 0x150 <DIO_SetPinDirection+0x3c>
+ 14c:	88 0f       	add	r24, r24
+ 14e:	99 1f       	adc	r25, r25
+ 150:	6a 95       	dec	r22
+ 152:	e2 f7       	brpl	.-8      	; 0x14c <DIO_SetPinDirection+0x38>
+ 154:	80 95       	com	r24
+ 156:	82 23       	and	r24, r18
+ 158:	8a bb       	out	0x1a, r24	; 26
+ 15a:	08 95       	ret
+ 15c:	41 30       	cpi	r20, 0x01	; 1
+ 15e:	59 f4       	brne	.+22     	; 0x176 <DIO_SetPinDirection+0x62>
+ 160:	27 b3       	in	r18, 0x17	; 23
+ 162:	81 e0       	ldi	r24, 0x01	; 1
+ 164:	90 e0       	ldi	r25, 0x00	; 0
+ 166:	02 c0       	rjmp	.+4      	; 0x16c <DIO_SetPinDirection+0x58>
+ 168:	88 0f       	add	r24, r24
+ 16a:	99 1f       	adc	r25, r25
+ 16c:	6a 95       	dec	r22
+ 16e:	e2 f7       	brpl	.-8      	; 0x168 <DIO_SetPinDirection+0x54>
+ 170:	82 2b       	or	r24, r18
+ 172:	87 bb       	out	0x17, r24	; 23
+ 174:	08 95       	ret
+ 176:	41 11       	cpse	r20, r1
+ 178:	41 c0       	rjmp	.+130    	; 0x1fc <DIO_SetPinDirection+0xe8>
+ 17a:	27 b3       	in	r18, 0x17	; 23
+ 17c:	81 e0       	ldi	r24, 0x01	; 1
+ 17e:	90 e0       	ldi	r25, 0x00	; 0
+ 180:	02 c0       	rjmp	.+4      	; 0x186 <DIO_SetPinDirection+0x72>
+ 182:	88 0f       	add	r24, r24
+ 184:	99 1f       	adc	r25, r25
+ 186:	6a 95       	dec	r22
+ 188:	e2 f7       	brpl	.-8      	; 0x182 <DIO_SetPinDirection+0x6e>
+ 18a:	80 95       	com	r24
+ 18c:	82 23       	and	r24, r18
+ 18e:	87 bb       	out	0x17, r24	; 23
+ 190:	08 95       	ret
+ 192:	41 30       	cpi	r20, 0x01	; 1
+ 194:	59 f4       	brne	.+22     	; 0x1ac <DIO_SetPinDirection+0x98>
+ 196:	24 b3       	in	r18, 0x14	; 20
+ 198:	81 e0       	ldi	r24, 0x01	; 1
+ 19a:	90 e0       	ldi	r25, 0x00	; 0
+ 19c:	02 c0       	rjmp	.+4      	; 0x1a2 <DIO_SetPinDirection+0x8e>
+ 19e:	88 0f       	add	r24, r24
+ 1a0:	99 1f       	adc	r25, r25
+ 1a2:	6a 95       	dec	r22
+ 1a4:	e2 f7       	brpl	.-8      	; 0x19e <DIO_SetPinDirection+0x8a>
+ 1a6:	82 2b       	or	r24, r18
+ 1a8:	84 bb       	out	0x14, r24	; 20
+ 1aa:	08 95       	ret
+ 1ac:	41 11       	cpse	r20, r1
+ 1ae:	26 c0       	rjmp	.+76     	; 0x1fc <DIO_SetPinDirection+0xe8>
+ 1b0:	24 b3       	in	r18, 0x14	; 20
+ 1b2:	81 e0       	ldi	r24, 0x01	; 1
+ 1b4:	90 e0       	ldi	r25, 0x00	; 0
+ 1b6:	02 c0       	rjmp	.+4      	; 0x1bc <DIO_SetPinDirection+0xa8>
+ 1b8:	88 0f       	add	r24, r24
+ 1ba:	99 1f       	adc	r25, r25
+ 1bc:	6a 95       	dec	r22
+ 1be:	e2 f7       	brpl	.-8      	; 0x1b8 <DIO_SetPinDirection+0xa4>
+ 1c0:	80 95       	com	r24
+ 1c2:	82 23       	and	r24, r18
+ 1c4:	84 bb       	out	0x14, r24	; 20
+ 1c6:	08 95       	ret
+ 1c8:	41 30       	cpi	r20, 0x01	; 1
+ 1ca:	59 f4       	brne	.+22     	; 0x1e2 <DIO_SetPinDirection+0xce>
+ 1cc:	21 b3       	in	r18, 0x11	; 17
+ 1ce:	81 e0       	ldi	r24, 0x01	; 1
+ 1d0:	90 e0       	ldi	r25, 0x00	; 0
+ 1d2:	02 c0       	rjmp	.+4      	; 0x1d8 <DIO_SetPinDirection+0xc4>
+ 1d4:	88 0f       	add	r24, r24
+ 1d6:	99 1f       	adc	r25, r25
+ 1d8:	6a 95       	dec	r22
+ 1da:	e2 f7       	brpl	.-8      	; 0x1d4 <DIO_SetPinDirection+0xc0>
+ 1dc:	82 2b       	or	r24, r18
+ 1de:	81 bb       	out	0x11, r24	; 17
+ 1e0:	08 95       	ret
+ 1e2:	41 11       	cpse	r20, r1
+ 1e4:	0b c0       	rjmp	.+22     	; 0x1fc <DIO_SetPinDirection+0xe8>
+ 1e6:	21 b3       	in	r18, 0x11	; 17
+ 1e8:	81 e0       	ldi	r24, 0x01	; 1
+ 1ea:	90 e0       	ldi	r25, 0x00	; 0
+ 1ec:	02 c0       	rjmp	.+4      	; 0x1f2 <DIO_SetPinDirection+0xde>
+ 1ee:	88 0f       	add	r24, r24
+ 1f0:	99 1f       	adc	r25, r25
+ 1f2:	6a 95       	dec	r22
+ 1f4:	e2 f7       	brpl	.-8      	; 0x1ee <DIO_SetPinDirection+0xda>
+ 1f6:	80 95       	com	r24
+ 1f8:	82 23       	and	r24, r18
+ 1fa:	81 bb       	out	0x11, r24	; 17
+ 1fc:	08 95       	ret
+
+000001fe <DIO_TogglePinValue>:
+			}
+		break;
+	}	
+}
+void DIO_TogglePinValue (uint8 PortNumber , uint8 PinNumber) {
+	switch (PortNumber) {
+ 1fe:	81 30       	cpi	r24, 0x01	; 1
+ 200:	89 f0       	breq	.+34     	; 0x224 <DIO_TogglePinValue+0x26>
+ 202:	28 f0       	brcs	.+10     	; 0x20e <DIO_TogglePinValue+0x10>
+ 204:	82 30       	cpi	r24, 0x02	; 2
+ 206:	c9 f0       	breq	.+50     	; 0x23a <DIO_TogglePinValue+0x3c>
+ 208:	83 30       	cpi	r24, 0x03	; 3
+ 20a:	11 f1       	breq	.+68     	; 0x250 <DIO_TogglePinValue+0x52>
+ 20c:	08 95       	ret
+		case portA :
+			TOGGLE_BIT(PORTA_REG , PinNumber) ; 
+ 20e:	2b b3       	in	r18, 0x1b	; 27
+ 210:	81 e0       	ldi	r24, 0x01	; 1
+ 212:	90 e0       	ldi	r25, 0x00	; 0
+ 214:	02 c0       	rjmp	.+4      	; 0x21a <DIO_TogglePinValue+0x1c>
+ 216:	88 0f       	add	r24, r24
+ 218:	99 1f       	adc	r25, r25
+ 21a:	6a 95       	dec	r22
+ 21c:	e2 f7       	brpl	.-8      	; 0x216 <DIO_TogglePinValue+0x18>
+ 21e:	82 27       	eor	r24, r18
+ 220:	8b bb       	out	0x1b, r24	; 27
+			break ;
+ 222:	08 95       	ret
+			
+		case portB :
+			TOGGLE_BIT(PORTB_REG , PinNumber) ;
+ 224:	28 b3       	in	r18, 0x18	; 24
+ 226:	81 e0       	ldi	r24, 0x01	; 1
+ 228:	90 e0       	ldi	r25, 0x00	; 0
+ 22a:	02 c0       	rjmp	.+4      	; 0x230 <DIO_TogglePinValue+0x32>
+ 22c:	88 0f       	add	r24, r24
+ 22e:	99 1f       	adc	r25, r25
+ 230:	6a 95       	dec	r22
+ 232:	e2 f7       	brpl	.-8      	; 0x22c <DIO_TogglePinValue+0x2e>
+ 234:	82 27       	eor	r24, r18
+ 236:	88 bb       	out	0x18, r24	; 24
+			break ;
+ 238:	08 95       	ret
+			
+		case portC :
+			TOGGLE_BIT(PORTC_REG , PinNumber) ;
+ 23a:	25 b3       	in	r18, 0x15	; 21
+ 23c:	81 e0       	ldi	r24, 0x01	; 1
+ 23e:	90 e0       	ldi	r25, 0x00	; 0
+ 240:	02 c0       	rjmp	.+4      	; 0x246 <DIO_TogglePinValue+0x48>
+ 242:	88 0f       	add	r24, r24
+ 244:	99 1f       	adc	r25, r25
+ 246:	6a 95       	dec	r22
+ 248:	e2 f7       	brpl	.-8      	; 0x242 <DIO_TogglePinValue+0x44>
+ 24a:	82 27       	eor	r24, r18
+ 24c:	85 bb       	out	0x15, r24	; 21
+			break ;
+ 24e:	08 95       	ret
+			
+		case portD :
+			TOGGLE_BIT(PORTD_REG , PinNumber) ;
+ 250:	22 b3       	in	r18, 0x12	; 18
+ 252:	81 e0       	ldi	r24, 0x01	; 1
+ 254:	90 e0       	ldi	r25, 0x00	; 0
+ 256:	02 c0       	rjmp	.+4      	; 0x25c <DIO_TogglePinValue+0x5e>
+ 258:	88 0f       	add	r24, r24
+ 25a:	99 1f       	adc	r25, r25
+ 25c:	6a 95       	dec	r22
+ 25e:	e2 f7       	brpl	.-8      	; 0x258 <DIO_TogglePinValue+0x5a>
+ 260:	82 27       	eor	r24, r18
+ 262:	82 bb       	out	0x12, r24	; 18
+ 264:	08 95       	ret
+
+00000266 <TIMER1_reset>:
+uint8 TIMER1_end (void) {
+	while((TC1_Status_REG & (1<<2)) == 0);	// wait till the overflow of A flag is SET
+	return 1 ; 
+}
+void TIMER1_reset (void) {
+	TC1_Data_H_REG = 0xFF ;
+ 266:	8f ef       	ldi	r24, 0xFF	; 255
+ 268:	8d bd       	out	0x2d, r24	; 45
+	TC1_Data_L_REG = 0x82 ;
+ 26a:	82 e8       	ldi	r24, 0x82	; 130
+ 26c:	8c bd       	out	0x2c, r24	; 44
+	SET_BIT (TC1_Status_REG , 2) ;   //clear timer1 overflow flag
+ 26e:	88 b7       	in	r24, 0x38	; 56
+ 270:	84 60       	ori	r24, 0x04	; 4
+ 272:	88 bf       	out	0x38, r24	; 56
+ 274:	08 95       	ret
+
+00000276 <INT_global_Enable>:
+}
+
+void INT_global_Enable (void) {
+	SET_BIT (Status_REG , 7) ;
+ 276:	8f b7       	in	r24, 0x3f	; 63
+ 278:	80 68       	ori	r24, 0x80	; 128
+ 27a:	8f bf       	out	0x3f, r24	; 63
+ 27c:	08 95       	ret
+
+0000027e <INT_Timer_Enable>:
+}
+
+void INT_Timer_Enable (void) {
+	SET_BIT (TC1_INTMask_REG , 2) ;
+ 27e:	89 b7       	in	r24, 0x39	; 57
+ 280:	84 60       	ori	r24, 0x04	; 4
+ 282:	89 bf       	out	0x39, r24	; 57
+ 284:	08 95       	ret
+
+00000286 <TIMER1_init>:
+
+void (*gpfun) (void) ;          // global pointer to function
+
+// tick time = 1 ms
+void TIMER1_init (void) {				     
+	SET_BIT(TC1_Control_B_REG , 1) ;         //set the pre-scalar as 8   ,  freq = 1 MHz
+ 286:	8e b5       	in	r24, 0x2e	; 46
+ 288:	82 60       	ori	r24, 0x02	; 2
+ 28a:	8e bd       	out	0x2e, r24	; 46
+	INT_Timer_Enable() ;
+ 28c:	0e 94 3f 01 	call	0x27e	; 0x27e <INT_Timer_Enable>
+	INT_global_Enable() ;
+ 290:	0e 94 3b 01 	call	0x276	; 0x276 <INT_global_Enable>
+	TC1_Data_H_REG = 0xFF ;					// delay ticks = 65535 - (delay_ms * 1000 * 1) / 8 
+ 294:	8f ef       	ldi	r24, 0xFF	; 255
+ 296:	8d bd       	out	0x2d, r24	; 45
+	TC1_Data_L_REG = 0x82 ;  
+ 298:	82 e8       	ldi	r24, 0x82	; 130
+ 29a:	8c bd       	out	0x2c, r24	; 44
+ 29c:	08 95       	ret
+
+0000029e <Timer_cb_func>:
+void INT_Timer_Enable (void) {
+	SET_BIT (TC1_INTMask_REG , 2) ;
+}
+
+void Timer_cb_func (void (*p_fun) (void)) {
+	gpfun = p_fun ;
+ 29e:	90 93 61 00 	sts	0x0061, r25	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+ 2a2:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
+ 2a6:	08 95       	ret
+
+000002a8 <__vector_9>:
+}
+
+void __vector_9(void)         // Timer1 ISR to call the scheduler
+{
+ 2a8:	1f 92       	push	r1
+ 2aa:	0f 92       	push	r0
+ 2ac:	0f b6       	in	r0, 0x3f	; 63
+ 2ae:	0f 92       	push	r0
+ 2b0:	11 24       	eor	r1, r1
+ 2b2:	2f 93       	push	r18
+ 2b4:	3f 93       	push	r19
+ 2b6:	4f 93       	push	r20
+ 2b8:	5f 93       	push	r21
+ 2ba:	6f 93       	push	r22
+ 2bc:	7f 93       	push	r23
+ 2be:	8f 93       	push	r24
+ 2c0:	9f 93       	push	r25
+ 2c2:	af 93       	push	r26
+ 2c4:	bf 93       	push	r27
+ 2c6:	ef 93       	push	r30
+ 2c8:	ff 93       	push	r31
+	TIMER1_reset() ;
+ 2ca:	0e 94 33 01 	call	0x266	; 0x266 <TIMER1_reset>
+	gpfun() ;
+ 2ce:	e0 91 60 00 	lds	r30, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+ 2d2:	f0 91 61 00 	lds	r31, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+ 2d6:	09 95       	icall
+	
+}
+ 2d8:	ff 91       	pop	r31
+ 2da:	ef 91       	pop	r30
+ 2dc:	bf 91       	pop	r27
+ 2de:	af 91       	pop	r26
+ 2e0:	9f 91       	pop	r25
+ 2e2:	8f 91       	pop	r24
+ 2e4:	7f 91       	pop	r23
+ 2e6:	6f 91       	pop	r22
+ 2e8:	5f 91       	pop	r21
+ 2ea:	4f 91       	pop	r20
+ 2ec:	3f 91       	pop	r19
+ 2ee:	2f 91       	pop	r18
+ 2f0:	0f 90       	pop	r0
+ 2f2:	0f be       	out	0x3f, r0	; 63
+ 2f4:	0f 90       	pop	r0
+ 2f6:	1f 90       	pop	r1
+ 2f8:	18 95       	reti
+
+000002fa <OS_Scheduler>:
+	TCB_Tasks[periority].TCB_p_task = p_task ;
+} 
+
+/* Non-Preemptive scheduler and priority based scheduling algorithm */
+/* Scheduler execute Tasks periodically */
+static void OS_Scheduler (void) {
+ 2fa:	cf 92       	push	r12
+ 2fc:	df 92       	push	r13
+ 2fe:	ef 92       	push	r14
+ 300:	ff 92       	push	r15
+ 302:	1f 93       	push	r17
+ 304:	cf 93       	push	r28
+ 306:	df 93       	push	r29
+	uint8 counter = 0 ; 
+	for (counter=0 ; counter<NUMBER_OF_TASKS ; counter++) {
+ 308:	10 e0       	ldi	r17, 0x00	; 0
+ 30a:	28 c0       	rjmp	.+80     	; 0x35c <OS_Scheduler+0x62>
+		if (TCB_Tasks[counter].TCB_First_Delay == 0) {
+ 30c:	c1 2f       	mov	r28, r17
+ 30e:	d0 e0       	ldi	r29, 0x00	; 0
+ 310:	fe 01       	movw	r30, r28
+ 312:	ee 0f       	add	r30, r30
+ 314:	ff 1f       	adc	r31, r31
+ 316:	ec 0f       	add	r30, r28
+ 318:	fd 1f       	adc	r31, r29
+ 31a:	ee 0f       	add	r30, r30
+ 31c:	ff 1f       	adc	r31, r31
+ 31e:	ee 59       	subi	r30, 0x9E	; 158
+ 320:	ff 4f       	sbci	r31, 0xFF	; 255
+ 322:	80 81       	ld	r24, Z
+ 324:	91 81       	ldd	r25, Z+1	; 0x01
+ 326:	00 97       	sbiw	r24, 0x00	; 0
+ 328:	61 f4       	brne	.+24     	; 0x342 <OS_Scheduler+0x48>
+			// Call the Task
+			TCB_Tasks[counter].TCB_p_task() ; 
+ 32a:	6f 01       	movw	r12, r30
+ 32c:	04 80       	ldd	r0, Z+4	; 0x04
+ 32e:	f5 81       	ldd	r31, Z+5	; 0x05
+ 330:	e0 2d       	mov	r30, r0
+ 332:	09 95       	icall
+			
+			// Update the first delay again so that the task can be invoked periodically 
+			TCB_Tasks[counter].TCB_First_Delay = TCB_Tasks[counter].TCB_Periodicity - 1 ; 
+ 334:	f6 01       	movw	r30, r12
+ 336:	82 81       	ldd	r24, Z+2	; 0x02
+ 338:	93 81       	ldd	r25, Z+3	; 0x03
+ 33a:	01 97       	sbiw	r24, 0x01	; 1
+ 33c:	91 83       	std	Z+1, r25	; 0x01
+ 33e:	80 83       	st	Z, r24
+ 340:	0c c0       	rjmp	.+24     	; 0x35a <OS_Scheduler+0x60>
+		}
+		else {
+			// Decrement the first delay by one tick
+			TCB_Tasks[counter].TCB_First_Delay -- ; 
+ 342:	9e 01       	movw	r18, r28
+ 344:	22 0f       	add	r18, r18
+ 346:	33 1f       	adc	r19, r19
+ 348:	c2 0f       	add	r28, r18
+ 34a:	d3 1f       	adc	r29, r19
+ 34c:	cc 0f       	add	r28, r28
+ 34e:	dd 1f       	adc	r29, r29
+ 350:	ce 59       	subi	r28, 0x9E	; 158
+ 352:	df 4f       	sbci	r29, 0xFF	; 255
+ 354:	01 97       	sbiw	r24, 0x01	; 1
+ 356:	99 83       	std	Y+1, r25	; 0x01
+ 358:	88 83       	st	Y, r24
+
+/* Non-Preemptive scheduler and priority based scheduling algorithm */
+/* Scheduler execute Tasks periodically */
+static void OS_Scheduler (void) {
+	uint8 counter = 0 ; 
+	for (counter=0 ; counter<NUMBER_OF_TASKS ; counter++) {
+ 35a:	1f 5f       	subi	r17, 0xFF	; 255
+ 35c:	14 30       	cpi	r17, 0x04	; 4
+ 35e:	b0 f2       	brcs	.-84     	; 0x30c <OS_Scheduler+0x12>
+		else {
+			// Decrement the first delay by one tick
+			TCB_Tasks[counter].TCB_First_Delay -- ; 
+		}
+	}
+}
+ 360:	df 91       	pop	r29
+ 362:	cf 91       	pop	r28
+ 364:	1f 91       	pop	r17
+ 366:	ff 90       	pop	r15
+ 368:	ef 90       	pop	r14
+ 36a:	df 90       	pop	r13
+ 36c:	cf 90       	pop	r12
+ 36e:	08 95       	ret
+
+00000370 <OS_Init>:
+
+/* Create array of structures for TCB required for each task */
+TCB TCB_Tasks [NUMBER_OF_TASKS] ;
+
+void OS_Init (void) {
+	Timer_cb_func(OS_Scheduler) ;
+ 370:	8d e7       	ldi	r24, 0x7D	; 125
+ 372:	91 e0       	ldi	r25, 0x01	; 1
+ 374:	0e 94 4f 01 	call	0x29e	; 0x29e <Timer_cb_func>
+ 378:	08 95       	ret
+
+0000037a <OS_CreateTask>:
+}
+
+void OS_CreateTask (uint8 periority , uint32 periodicity , uint32 first_delay , void (*p_task) (void)) {
+	TCB_Tasks[periority].TCB_Periodicity = periodicity ; 
+ 37a:	90 e0       	ldi	r25, 0x00	; 0
+ 37c:	fc 01       	movw	r30, r24
+ 37e:	ee 0f       	add	r30, r30
+ 380:	ff 1f       	adc	r31, r31
+ 382:	df 01       	movw	r26, r30
+ 384:	a8 0f       	add	r26, r24
+ 386:	b9 1f       	adc	r27, r25
+ 388:	aa 0f       	add	r26, r26
+ 38a:	bb 1f       	adc	r27, r27
+ 38c:	ae 59       	subi	r26, 0x9E	; 158
+ 38e:	bf 4f       	sbci	r27, 0xFF	; 255
+ 390:	13 96       	adiw	r26, 0x03	; 3
+ 392:	7c 93       	st	X, r23
+ 394:	6e 93       	st	-X, r22
+ 396:	12 97       	sbiw	r26, 0x02	; 2
+	TCB_Tasks[periority].TCB_First_Delay = first_delay ;
+ 398:	11 96       	adiw	r26, 0x01	; 1
+ 39a:	5c 93       	st	X, r21
+ 39c:	4e 93       	st	-X, r20
+	TCB_Tasks[periority].TCB_p_task = p_task ;
+ 39e:	fd 01       	movw	r30, r26
+ 3a0:	35 83       	std	Z+5, r19	; 0x05
+ 3a2:	24 83       	std	Z+4, r18	; 0x04
+ 3a4:	08 95       	ret
+
+000003a6 <OS_Start>:
+		}
+	}
+}
+
+void OS_Start (void) {
+	TIMER1_init() ;
+ 3a6:	0e 94 43 01 	call	0x286	; 0x286 <TIMER1_init>
+ 3aa:	08 95       	ret
+
+000003ac <_exit>:
+ 3ac:	f8 94       	cli
+
+000003ae <__stop_program>:
+ 3ae:	ff cf       	rjmp	.-2      	; 0x3ae <__stop_program>
